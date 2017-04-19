@@ -1,4 +1,5 @@
 from unittest import TestCase, mock
+from reloadable import configure
 from reloadable.decorators import reloadable, STOP_CONDITION_EXCEPTION
 
 
@@ -51,3 +52,17 @@ class ReloadableDecoratorTests(TestCase):
         for index, exception_cls in enumerate(exceptions[:-1]):
             self.assertIsInstance(mock_callback.call_args_list[index][0][0],
                                   exception_cls)
+
+    def test_disable_reloadable(self):
+        configure(enabled=False)
+
+        @reloadable()
+        def not_reloadable():
+            raise Exception('Oops')
+
+        with self.assertRaises(Exception) as ex:
+            not_reloadable()
+
+        self.assertEqual('Oops', str(ex.exception))
+
+        configure(enabled=True)

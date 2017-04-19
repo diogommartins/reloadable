@@ -1,5 +1,6 @@
 from functools import wraps
 from time import sleep
+from reloadable import config
 
 
 STOP_CONDITION_EXCEPTION = KeyboardInterrupt
@@ -7,6 +8,9 @@ STOP_CONDITION_EXCEPTION = KeyboardInterrupt
 
 def reloadable(exception_callback=lambda e: None, sleep_time: float=0):
     def decorator(func):
+        if not config.ENABLED:
+            return func
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             while True:
