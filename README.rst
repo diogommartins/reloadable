@@ -50,7 +50,20 @@ You can also wait some time before the next respawn
         # some code...
 
 You can always stop reloadable with a ``KeyboardInterrupt`` exception
-(usually triggered by ``^C``, but not necessarily)
+(usually triggered by ``^C``, but not necessarily).
+
+Alternatively you can disable the reloadable decorator via configuration,
+which is useful during unittests.
+
+.. code-block:: python
+
+    from reloadable import configure, reloadable
+    
+    configure(enabled=False)
+    
+    @reloadable()  # When disabled, it does nothing
+    def i_am_free():
+        return '\o/'
 
 Tests
 -----
