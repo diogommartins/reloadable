@@ -2,9 +2,6 @@ from .decorators import reloadable
 from . import config
 
 
-__version__ = '0.0.3'
-
-
 def configure(**options):
     for option, value in options.items():
         config_name = option.upper()
