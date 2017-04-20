@@ -1,1 +1,2 @@
 ENABLED = True
+STOP_CONDITION_EXCEPTION = KeyboardInterrupt

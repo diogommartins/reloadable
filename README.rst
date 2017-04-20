@@ -8,7 +8,7 @@ The function ``my_func`` will run indefinitely until it stops raising exceptions
 which will never happen in this case.
 
 .. code-block:: python
-    
+
     from reloadable import reloadable
 
     @reloadable()
@@ -20,7 +20,7 @@ that connects to a queue en fetches messages. Eventually it may disconnect and
 raise an error trying to fetch a message, so reloadable can retry connecting.
 
 .. code-block:: python
-    
+
     @reloadable()
     def get_message():
         conn = Queue(host='...', password='...')
@@ -33,7 +33,7 @@ You can config a callback function that receives an exception, which will be
 called if it occurs.
 
 .. code-block:: python
-    
+
     def shit_happens(exception):
         logger.exception(exception)
     
@@ -44,13 +44,33 @@ called if it occurs.
 You can also wait some time before the next respawn
 
 .. code-block:: python
-    
+
     @reloadable(sleep_time=7)  # wait 7 seconds before running `get_message` after a failure 
     def get_message():
         # some code...
 
 You can always stop reloadable with a ``KeyboardInterrupt`` exception
 (usually triggered by ``^C``, but not necessarily).
+
+Another option is to configure the stop condition exception.
+
+.. code-block:: python
+
+    @reloadable(stop_condition_exception=ValueError)
+    def i_will_stop():
+        raise ValueError('something went wrong')
+
+Or you can define it globally, which will be used if local stop condition wasn't defined
+
+.. code-block:: python
+
+    from reloadable import reloadable, configure
+    
+    configure(stop_condition_exception=KeyError)
+    
+    @reloadable()
+    def i_will_stop():
+        raise KeyError('...')
 
 Alternatively you can disable the reloadable decorator via configuration,
 which is useful during unittests.

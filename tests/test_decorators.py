@@ -1,6 +1,7 @@
 from unittest import TestCase, mock
 from reloadable import configure
-from reloadable.decorators import reloadable, STOP_CONDITION_EXCEPTION
+from reloadable.decorators import reloadable
+from reloadable.config import STOP_CONDITION_EXCEPTION
 
 
 class ReloadableDecoratorTests(TestCase):
@@ -66,3 +67,28 @@ class ReloadableDecoratorTests(TestCase):
         self.assertEqual('Oops', str(ex.exception))
 
         configure(enabled=True)
+
+    def test_stops_on_custom_stop_condition(self):
+        configure(stop_condition_exception=BlockingIOError)
+
+        @reloadable()
+        def not_reloadable():
+            raise BlockingIOError('Oops')
+
+        with self.assertRaises(BlockingIOError) as ex:
+            not_reloadable()
+
+        self.assertEqual('Oops', str(ex.exception))
+
+        configure(enabled=KeyboardInterrupt)
+
+    def test_local_stop_condition_preceeds_global_config(self):
+        @reloadable(stop_condition_exception=ValueError)
+        def not_reloadable():
+            raise ValueError('Oops')
+
+        configure(stop_condition_exception=BlockingIOError)
+
+        self.assertRaises(ValueError, not_reloadable)
+
+        configure(enabled=KeyboardInterrupt)
