@@ -1,6 +1,7 @@
 from unittest import TestCase, mock
 from reloadable import configure
-from reloadable.decorators import reloadable, STOP_CONDITION_EXCEPTION
+from reloadable.decorators import reloadable
+from reloadable.config import STOP_CONDITION_EXCEPTION
 
 
 class ReloadableDecoratorTests(TestCase):

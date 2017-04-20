@@ -3,9 +3,6 @@ from time import sleep
 from reloadable import config
 
 
-STOP_CONDITION_EXCEPTION = KeyboardInterrupt
-
-
 def reloadable(exception_callback=lambda e: None, sleep_time: float=0):
     def decorator(func):
         if not config.ENABLED:
@@ -16,7 +13,7 @@ def reloadable(exception_callback=lambda e: None, sleep_time: float=0):
             while True:
                 try:
                     func(*args, **kwargs)
-                except STOP_CONDITION_EXCEPTION as e:
+                except config.STOP_CONDITION_EXCEPTION as e:
                     raise e
                 except Exception as e:
                     exception_callback(e)
