@@ -66,3 +66,17 @@ class ReloadableDecoratorTests(TestCase):
         self.assertEqual('Oops', str(ex.exception))
 
         configure(enabled=True)
+
+    def test_disable_reloadable_works_after_decorator_has_been_applied(self):
+        @reloadable()
+        def not_reloadable():
+            raise Exception('Oops')
+
+        configure(enabled=False)
+
+        with self.assertRaises(Exception) as ex:
+            not_reloadable()
+
+        self.assertEqual('Oops', str(ex.exception))
+
+        configure(enabled=True)
