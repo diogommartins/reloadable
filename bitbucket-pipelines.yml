@@ -5,4 +5,5 @@ pipelines:
     - step:
         script:
           - pip --version
-          - python3.5 -m unittest -v tests
+          - pip install pytest
+          - py.test -vv
