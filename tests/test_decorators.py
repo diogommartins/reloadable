@@ -67,3 +67,17 @@ class ReloadableDecoratorTests(TestCase):
         self.assertEqual('Oops', str(ex.exception))
 
         configure(enabled=True)
+
+    def test_stops_on_custom_stop_condition(self):
+        configure(stop_condition_exception=BlockingIOError)
+
+        @reloadable()
+        def not_reloadable():
+            raise BlockingIOError('Oops')
+
+        with self.assertRaises(BlockingIOError) as ex:
+            not_reloadable()
+
+        self.assertEqual('Oops', str(ex.exception))
+
+        configure(enabled=KeyboardInterrupt)
