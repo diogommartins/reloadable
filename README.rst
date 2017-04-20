@@ -51,6 +51,16 @@ You can also wait some time before the next respawn
 
 You can always stop reloadable with a ``KeyboardInterrupt`` exception
 (usually triggered by ``^C``, but not necessarily).
+Another option is to configure the stop condition exception
+
+.. code-block:: python
+    from reloadable import configure
+
+    configure(stop_condition_exception=ValueError)
+
+    @reloadable()
+    def i_will_stop():
+        raise ValueError('smething went wrong')
 
 Alternatively you can disable the reloadable decorator via configuration,
 which is useful during unittests.
