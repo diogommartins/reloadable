@@ -23,7 +23,8 @@ class ConfigureTest(TestCase):
         with self.assertRaises(ValueError) as ex:
             configure(wtf=False)
 
-        self.assertEqual("Option 'WTF' doesnt exist for reloadable", str(ex.exception))
+        self.assertEqual("Option 'WTF' doesn't exist for reloadable",
+                         str(ex.exception))
 
     def test_raises_error_if_option_doesnt_exist(self):
         self.assertRaises(ValueError, configure, spam=1)
