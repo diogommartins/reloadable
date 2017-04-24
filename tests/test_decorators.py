@@ -68,6 +68,20 @@ class ReloadableDecoratorTests(TestCase):
 
         configure(enabled=True)
 
+    def test_disable_reloadable_works_after_decorator_has_been_applied(self):
+        @reloadable()
+        def not_reloadable():
+            raise Exception('Oops')
+
+        configure(enabled=False)
+
+        with self.assertRaises(Exception) as ex:
+            not_reloadable()
+
+        self.assertEqual('Oops', str(ex.exception))
+
+        configure(enabled=True)
+
     def test_stops_on_custom_stop_condition(self):
         configure(stop_condition_exception=BlockingIOError)
 
@@ -80,7 +94,7 @@ class ReloadableDecoratorTests(TestCase):
 
         self.assertEqual('Oops', str(ex.exception))
 
-        configure(enabled=KeyboardInterrupt)
+        configure(stop_condition_exception=KeyboardInterrupt)
 
     def test_local_stop_condition_preceeds_global_config(self):
         @reloadable(stop_condition_exception=ValueError)
@@ -91,4 +105,4 @@ class ReloadableDecoratorTests(TestCase):
 
         self.assertRaises(ValueError, not_reloadable)
 
-        configure(enabled=KeyboardInterrupt)
+        configure(stop_condition_exception=KeyboardInterrupt)

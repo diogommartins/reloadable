@@ -6,11 +6,12 @@ from reloadable import config
 def reloadable(exception_callback=lambda e: None, sleep_time: float=0,
                stop_condition_exception: BaseException=None):
     def decorator(func):
-        if not config.ENABLED:
-            return func
-
         @wraps(func)
         def wrapper(*args, **kwargs):
+            if not config.ENABLED:
+                func(*args, **kwargs)
+                return
+
             while True:
                 try:
                     func(*args, **kwargs)

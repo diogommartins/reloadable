@@ -65,9 +65,9 @@ Or you can define it globally, which will be used if local stop condition wasn't
 .. code-block:: python
 
     from reloadable import reloadable, configure
-    
+
     configure(stop_condition_exception=KeyError)
-    
+
     @reloadable()
     def i_will_stop():
         raise KeyError('...')
@@ -78,9 +78,9 @@ which is useful during unittests.
 .. code-block:: python
 
     from reloadable import configure, reloadable
-    
+
     configure(enabled=False)
-    
+
     @reloadable()  # When disabled, it does nothing
     def i_am_free():
         return '\o/'
