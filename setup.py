@@ -2,7 +2,7 @@ from os import path
 from setuptools import setup, find_packages
 
 
-VERSION = '0.0.5'
+VERSION = '0.1.0'
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst')) as file:
@@ -15,7 +15,21 @@ setup(
     long_description=long_description,
     author='Diogo Magalhães Martins',
     author_email='magalhaesmartins@icloud.com',
+    maintainer='www.sieve.com.br',
+    maintainer_email='ti@sieve.com.br',
+    python_requires='2.7, >=3.5',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Console',
+        'Environment :: Web Environment',
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'Topic :: Utilities',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6'
+    ],
     url='https://bitbucket.org/sievetech/reloadable',
-    keywords='reloadable recover loop cli sieve',
+    keywords='reloadable recover decorator loop cli sieve',
     packages=find_packages(exclude=['tests']),
 )
