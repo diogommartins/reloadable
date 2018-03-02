@@ -1,4 +1,6 @@
 from unittest import TestCase, mock
+from unittest.mock import Mock
+
 from reloadable import configure
 from reloadable.decorators import reloadable
 from reloadable.config import STOP_CONDITION_EXCEPTION
@@ -106,3 +108,9 @@ class ReloadableDecoratorTests(TestCase):
         self.assertRaises(ValueError, not_reloadable)
 
         configure(stop_condition_exception=KeyboardInterrupt)
+
+    def test_it_reloads_function_until_it_reaches_max_reloads(self):
+        func = Mock(side_effect=Exception)
+        decorated_func = reloadable(max_reloads=3)(func)()
+        decorated_func()
+        self.assertEqual(func.call_count, 3)
