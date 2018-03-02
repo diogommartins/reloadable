@@ -111,6 +111,6 @@ class ReloadableDecoratorTests(TestCase):
 
     def test_it_reloads_function_until_it_reaches_max_reloads(self):
         func = Mock(side_effect=Exception)
-        decorated_func = reloadable(max_reloads=3)(func)()
+        decorated_func = reloadable(max_reloads=3)(func)
         decorated_func()
         self.assertEqual(func.call_count, 3)
