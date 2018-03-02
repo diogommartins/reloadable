@@ -15,7 +15,7 @@ which will never happen in this case.
     def my_func():
         raise Exception('Oops')
 
-This module is useful when we want to run something for ever, like a code
+This module is useful when we want to run something forever, like a code
 that connects to a queue en fetches messages. Eventually it may disconnect and
 raise an error trying to fetch a message, so reloadable can retry connecting.
 
@@ -70,6 +70,17 @@ Or you can define it globally, which will be used if local stop condition wasn't
 
     @reloadable()
     def i_will_stop():
+        raise KeyError('...')
+
+You may also want to limit the number of times that the decorator should try
+rerun the function
+
+.. code-block:: python
+
+    from reloadable import reloadable
+
+    @reloadable(max_reloads=2)
+    def a_func():
         raise KeyError('...')
 
 Alternatively you can disable the reloadable decorator via configuration,
