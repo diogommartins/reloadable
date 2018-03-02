@@ -1,9 +1,12 @@
 from functools import wraps
 from time import sleep
+from typing import Optional, Callable
+
 from reloadable import config
 
 
-def reloadable(exception_callback=lambda e: None, sleep_time: float=0,
+def reloadable(exception_callback: Optional[Callable]=None,
+               sleep_time: float=0,
                stop_condition_exception: BaseException=None):
     def decorator(func):
         @wraps(func)
@@ -17,7 +20,8 @@ def reloadable(exception_callback=lambda e: None, sleep_time: float=0,
                 except (stop_condition_exception or config.STOP_CONDITION_EXCEPTION) as e:
                     raise e
                 except Exception as e:
-                    exception_callback(e)
+                    if exception_callback:
+                        exception_callback(e)
                     sleep(sleep_time)
         return wrapper
     return decorator
