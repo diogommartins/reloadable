@@ -9,8 +9,7 @@ def reloadable(exception_callback=lambda e: None, sleep_time: float=0,
         @wraps(func)
         def wrapper(*args, **kwargs):
             if not config.ENABLED:
-                func(*args, **kwargs)
-                return
+                return func(*args, **kwargs)
 
             while True:
                 try:
