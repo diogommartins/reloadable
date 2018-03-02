@@ -1,14 +1,13 @@
 from functools import wraps
 from time import sleep
-from typing import Optional, Callable
 
 from reloadable import config
 
 
-def reloadable(exception_callback: Optional[Callable]=None,
-               sleep_time: float=0,
-               stop_condition_exception: BaseException=None,
-               max_reloads: Optional[int] = None):
+def reloadable(exception_callback=None,
+               sleep_time=0,
+               stop_condition_exception=None,
+               max_reloads=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
