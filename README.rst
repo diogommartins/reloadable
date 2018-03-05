@@ -1,5 +1,8 @@
 Reloadable
 ==========
+
+|Build Status| |codecov|
+
 Reruns a function upon failure
 
 Usage
@@ -103,3 +106,9 @@ Tests
 Installation
 ------------
 ``pip install reloadable``
+
+
+.. |Build Status| image:: https://travis-ci.org/diogommartins/reloadable.svg?branch=master
+   :target: https://travis-ci.org/diogommartins/reloadable
+.. |codecov| image:: https://codecov.io/gh/diogommartins/reloadable/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/diogommartins/reloadable
