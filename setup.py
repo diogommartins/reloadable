@@ -17,7 +17,7 @@ setup(
     author_email='magalhaesmartins@icloud.com',
     maintainer='www.sieve.com.br',
     maintainer_email='ti@sieve.com.br',
-    python_requires='2.7, >=3.5',
+    python_requires='==2.7, >=3.5',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
