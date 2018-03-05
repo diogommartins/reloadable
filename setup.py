@@ -1,8 +1,9 @@
+# coding=utf-8
 from os import path
 from setuptools import setup, find_packages
 
 
-VERSION = '0.1.1'
+VERSION = '0.1.4'
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst')) as file:
@@ -17,7 +18,7 @@ setup(
     author_email='magalhaesmartins@icloud.com',
     maintainer='www.sieve.com.br',
     maintainer_email='ti@sieve.com.br',
-    python_requires='==2.7, >=3.5',
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',

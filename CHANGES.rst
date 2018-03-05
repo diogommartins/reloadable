@@ -8,6 +8,6 @@ CHANGES
 * Adding a max_reloads parameter to reloadable decorator that limits reloads
 * Fixing return value of the decorator with disabled configuration
 
-0.1.1 (2018-03-05)
+0.1.4 (2018-03-05)
 ------------------
 * Fixing setup.py python_requires string
