@@ -5,5 +5,5 @@ pipelines:
     - step:
         script:
           - pip --version
-          - pip install pytest
+          - pip install -r requirements-dev.txt
           - py.test -vv

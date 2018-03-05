@@ -1,4 +1,9 @@
-from unittest import TestCase, mock
+from unittest import TestCase
+try:
+    from unittest.mock import Mock
+except ImportError:
+    from mock import Mock
+
 from reloadable import configure
 from reloadable.decorators import reloadable
 from reloadable.config import STOP_CONDITION_EXCEPTION
@@ -6,10 +11,10 @@ from reloadable.config import STOP_CONDITION_EXCEPTION
 
 class ReloadableDecoratorTests(TestCase):
     def setUp(self):
-        self.exception_callback = mock.Mock()
+        self.exception_callback = Mock()
 
     def test_it_recovers_from_exception_until_KeyboardInterrupt(self):
-        func = mock.Mock(side_effect=[ValueError, STOP_CONDITION_EXCEPTION])
+        func = Mock(side_effect=[ValueError, STOP_CONDITION_EXCEPTION], __name__='func')
         reloadable_func = reloadable()(func)
 
         with self.assertRaises(STOP_CONDITION_EXCEPTION):
@@ -22,11 +27,11 @@ class ReloadableDecoratorTests(TestCase):
                       TypeError,
                       IndexError,
                       KeyError,
-                      BrokenPipeError,
+                      IOError,
                       AttributeError,
                       Exception,
                       STOP_CONDITION_EXCEPTION]
-        func = mock.Mock(side_effect=exceptions)
+        func = Mock(side_effect=exceptions, __name__='func')
         reloadable_func = reloadable()(func)
 
         with self.assertRaises(STOP_CONDITION_EXCEPTION):
@@ -39,12 +44,12 @@ class ReloadableDecoratorTests(TestCase):
                       TypeError,
                       IndexError,
                       KeyError,
-                      BrokenPipeError,
+                      IOError,
                       AttributeError,
                       Exception,
                       STOP_CONDITION_EXCEPTION]
-        func = mock.Mock(side_effect=exceptions)
-        mock_callback = mock.Mock()
+        func = Mock(side_effect=exceptions, __name__='func')
+        mock_callback = Mock()
         reloadable_func = reloadable(exception_callback=mock_callback)(func)
 
         with self.assertRaises(STOP_CONDITION_EXCEPTION):
@@ -83,13 +88,13 @@ class ReloadableDecoratorTests(TestCase):
         configure(enabled=True)
 
     def test_stops_on_custom_stop_condition(self):
-        configure(stop_condition_exception=BlockingIOError)
+        configure(stop_condition_exception=IOError)
 
         @reloadable()
         def not_reloadable():
-            raise BlockingIOError('Oops')
+            raise IOError('Oops')
 
-        with self.assertRaises(BlockingIOError) as ex:
+        with self.assertRaises(IOError) as ex:
             not_reloadable()
 
         self.assertEqual('Oops', str(ex.exception))
@@ -101,8 +106,14 @@ class ReloadableDecoratorTests(TestCase):
         def not_reloadable():
             raise ValueError('Oops')
 
-        configure(stop_condition_exception=BlockingIOError)
+        configure(stop_condition_exception=IOError)
 
         self.assertRaises(ValueError, not_reloadable)
 
         configure(stop_condition_exception=KeyboardInterrupt)
+
+    def test_it_reloads_function_until_it_reaches_max_reloads(self):
+        func = Mock(side_effect=Exception, __name__='func')
+        decorated_func = reloadable(max_reloads=3)(func)
+        decorated_func()
+        self.assertEqual(func.call_count, 3)
