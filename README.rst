@@ -1,7 +1,7 @@
 Reloadable
 ==========
 
-|Build Status| |codecov|
+|Build Status| |codecov| |Python Versions| |pypi|
 
 Reruns a function upon failure
 
@@ -110,5 +110,12 @@ Installation
 
 .. |Build Status| image:: https://travis-ci.org/diogommartins/reloadable.svg?branch=master
    :target: https://travis-ci.org/diogommartins/reloadable
+
 .. |codecov| image:: https://codecov.io/gh/diogommartins/reloadable/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/diogommartins/reloadable
+
+.. |pypi| image:: https://img.shields.io/pypi/v/reloadable.svg
+   :target: https://pypi.python.org/pypi/reloadable
+
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/reloadable.svg
+   :target: https://pypi.python.org/pypi/reloadable
