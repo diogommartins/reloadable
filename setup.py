@@ -3,7 +3,7 @@ from os import path
 from setuptools import setup, find_packages
 
 
-VERSION = '0.1.4'
+VERSION = '0.1.5'
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst')) as file:

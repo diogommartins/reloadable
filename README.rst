@@ -7,6 +7,10 @@ Reruns a function upon failure
 
 Usage
 -----
+
+Reloadable
+==========
+
 The function ``my_func`` will run indefinitely until it stops raising exceptions,
 which will never happen in this case.
 
@@ -76,7 +80,8 @@ Or you can define it globally, which will be used if local stop condition wasn't
         raise KeyError('...')
 
 You may also want to limit the number of times that the decorator should try
-rerun the function
+rerun the function. If the function is called ``max_reloads`` times without a
+success, it raises the last error.
 
 .. code-block:: python
 
@@ -98,6 +103,29 @@ which is useful during unittests.
     @reloadable()  # When disabled, it does nothing
     def i_am_free():
         return '\o/'
+
+
+Retry on Error
+==============
+
+The ``@retry_on_error`` decorator is useful when you want to retry something on
+error, but return the result once the decorated function finishes it's
+execution with success.
+
+.. code-block:: python
+
+   import requests
+   from reloadable.decorators import retry_on_error
+
+
+   @retry_on_error(max_reloads=3)
+   def my_request():
+       response = requests.get("https://www.sieve.com.br")
+
+       # raises an error for 4xx and 5xx status codes
+       response.raise_for_status()
+
+       return response.content
 
 Tests
 -----
