@@ -5,7 +5,7 @@ except ImportError:
     from mock import Mock
 
 from reloadable import configure
-from reloadable.decorators import reloadable
+from reloadable.decorators import reloadable, retry_on_error
 from reloadable.config import STOP_CONDITION_EXCEPTION
 
 
@@ -117,3 +117,25 @@ class ReloadableDecoratorTests(TestCase):
         decorated_func = reloadable(max_reloads=3)(func)
         decorated_func()
         self.assertEqual(func.call_count, 3)
+
+    def test_it_returns_on_sucess(self):
+        expected_result = Mock()
+        func = Mock(side_effect=[Exception, expected_result], __name__='func')
+        decorated_func = reloadable(max_reloads=3, return_on_sucess=True)(func)
+
+        result = decorated_func()
+
+        self.assertEqual(func.call_count, 2)
+        self.assertEqual(expected_result, result)
+
+
+class RetryOnErrorDecoratorTests(TestCase):
+    def test_it_returns_on_sucess(self):
+        expected_result = Mock()
+        func = Mock(side_effect=[Exception, expected_result], __name__='func')
+        decorated_func = retry_on_error(max_reloads=3)(func)
+
+        result = decorated_func()
+
+        self.assertEqual(func.call_count, 2)
+        self.assertEqual(expected_result, result)

@@ -1,4 +1,4 @@
-from functools import wraps
+from functools import wraps, partial
 from time import sleep
 
 from reloadable import config
@@ -7,7 +7,8 @@ from reloadable import config
 def reloadable(exception_callback=None,
                sleep_time=0,
                stop_condition_exception=None,
-               max_reloads=None):
+               max_reloads=None,
+               return_on_sucess=False):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -18,7 +19,9 @@ def reloadable(exception_callback=None,
 
             while reload_counter != max_reloads:
                 try:
-                    func(*args, **kwargs)
+                    result = func(*args, **kwargs)
+                    if return_on_sucess:
+                        return result
                 except (stop_condition_exception or config.STOP_CONDITION_EXCEPTION) as e:
                     raise e
                 except Exception as e:
@@ -28,3 +31,6 @@ def reloadable(exception_callback=None,
                     reload_counter += 1
         return wrapper
     return decorator
+
+
+retry_on_error = partial(reloadable, return_on_sucess=True)
