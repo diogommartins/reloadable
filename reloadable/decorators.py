@@ -8,7 +8,7 @@ def reloadable(exception_callback=None,
                sleep_time=0,
                stop_condition_exception=None,
                max_reloads=None,
-               return_on_sucess=False):
+               return_on_success=False):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -22,7 +22,7 @@ def reloadable(exception_callback=None,
                 try:
                     result = func(*args, **kwargs)
                     last_exception = None
-                    if return_on_sucess:
+                    if return_on_success:
                         return result
                 except (stop_condition_exception or config.STOP_CONDITION_EXCEPTION) as e:
                     raise e
@@ -39,4 +39,4 @@ def reloadable(exception_callback=None,
     return decorator
 
 
-retry_on_error = partial(reloadable, return_on_sucess=True)
+retry_on_error = partial(reloadable, return_on_success=True)

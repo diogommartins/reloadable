@@ -114,7 +114,7 @@ class ReloadableDecoratorTests(TestCase):
 
     def test_it_reloads_function_until_it_reaches_max_reloads(self):
         func = Mock(side_effect=[IOError, IOError, Mock()], __name__='func')
-        decorated_func = reloadable(max_reloads=3, return_on_sucess=True)(func)
+        decorated_func = reloadable(max_reloads=3, return_on_success=True)(func)
 
         decorated_func()
 
@@ -132,7 +132,7 @@ class ReloadableDecoratorTests(TestCase):
     def test_it_returns_on_sucess(self):
         expected_result = Mock()
         func = Mock(side_effect=[Exception, expected_result], __name__='func')
-        decorated_func = reloadable(max_reloads=3, return_on_sucess=True)(func)
+        decorated_func = reloadable(max_reloads=3, return_on_success=True)(func)
 
         result = decorated_func()
 
