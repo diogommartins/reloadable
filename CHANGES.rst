@@ -11,3 +11,8 @@ CHANGES
 0.1.4 (2018-03-05)
 ------------------
 * Fixing setup.py python_requires string
+
+0.1.5 (2018-03-06)
+------------------
+* Adding return_on_sucess parameter to reloadable
+* Adding retry_on_error convenience decorator
