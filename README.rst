@@ -80,7 +80,8 @@ Or you can define it globally, which will be used if local stop condition wasn't
         raise KeyError('...')
 
 You may also want to limit the number of times that the decorator should try
-rerun the function
+rerun the function. If the function is called ``max_reloads`` times without a
+success, it raises the last error.
 
 .. code-block:: python
 

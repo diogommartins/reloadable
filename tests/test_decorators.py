@@ -113,9 +113,20 @@ class ReloadableDecoratorTests(TestCase):
         configure(stop_condition_exception=KeyboardInterrupt)
 
     def test_it_reloads_function_until_it_reaches_max_reloads(self):
-        func = Mock(side_effect=Exception, __name__='func')
-        decorated_func = reloadable(max_reloads=3)(func)
+        func = Mock(side_effect=[IOError, IOError, Mock()], __name__='func')
+        decorated_func = reloadable(max_reloads=3, return_on_sucess=True)(func)
+
         decorated_func()
+
+        self.assertEqual(func.call_count, 3)
+
+    def test_it_raises_an_error_if_it_reaches_max_reloads_without_success(self):
+        func = Mock(side_effect=IOError, __name__='func')
+        decorated_func = reloadable(max_reloads=3)(func)
+
+        with self.assertRaises(IOError):
+            decorated_func()
+
         self.assertEqual(func.call_count, 3)
 
     def test_it_returns_on_sucess(self):

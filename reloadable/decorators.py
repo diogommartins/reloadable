@@ -17,9 +17,11 @@ def reloadable(exception_callback=None,
             if not config.ENABLED:
                 return func(*args, **kwargs)
 
+            last_exception = None
             while reload_counter != max_reloads:
                 try:
                     result = func(*args, **kwargs)
+                    last_exception = None
                     if return_on_sucess:
                         return result
                 except (stop_condition_exception or config.STOP_CONDITION_EXCEPTION) as e:
@@ -29,6 +31,10 @@ def reloadable(exception_callback=None,
                         exception_callback(e)
                     sleep(sleep_time)
                     reload_counter += 1
+                    last_exception = e
+
+            if last_exception:
+                raise last_exception
         return wrapper
     return decorator
 
